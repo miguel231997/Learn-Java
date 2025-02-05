@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Two_Pointers_Sliding_Window.iml" filepath="$PROJECT_DIR$/.idea/Two_Pointers_Sliding_Window.iml" />
+      <module fileurl="file://$PROJECT_DIR$/twopointe_slidingWindow/twopointe_slidingWindow.iml" filepath="$PROJECT_DIR$/twopointe_slidingWindow/twopointe_slidingWindow.iml" />
+    </modules>
+  </component>
+</project>
