@@ -32,6 +32,32 @@ public class Main {
         return new int[]{-1, -1}; //no solution found
     }
 
+    //TWO-SUM not sorted using hashmap
+    public int[] twoSum(int[] nums, int target) {
+        //declare hashmap to hold complements
+        Map<Integer, Integer> newArr = new HashMap<>();
+
+        //loop through array
+        for(int i = 0; i < nums.length; i ++){
+            //declare the complement we are looking for
+            int complement = target - nums[i];
+            //check if the complement is in the map
+            if(newArr.containsKey(complement)) {
+                //return the key value pair as an array
+                return new int[]{newArr.get(complement), i}; //return the value (NOT THE KEY) and current i;
+
+            }
+            //if not we add the key{element} value{indices} to the hashMap
+            newArr.put(nums[i], i);
+        }
+
+        //return [-1,-1] if not found
+
+        return new int[]{-1,-1};
+
+
+    }
+
     //Removing duplicates from a sorted array (FAST and SLOW POINTERS)
 
     public int removeDuplicates(int[] nums) {
