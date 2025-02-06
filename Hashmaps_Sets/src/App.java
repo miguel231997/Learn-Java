@@ -33,19 +33,19 @@ public class App {
 
         //Iterating through a HashMap
 
-        for(Map.Entry<Integer, String> entry : studentMap.entrySet()) {
+        for (Map.Entry<Integer, String> entry : studentMap.entrySet()) {
             System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
         }
 
         //only iterating through the Keys
 
-        for(Integer key : studentMap.keySet()) {
+        for (Integer key : studentMap.keySet()) {
             System.out.println("Key: " + key + ", Value: " + studentMap.get(key));
         }
 
         //iterating only values
 
-        for(String value : studentMap.values()) {
+        for (String value : studentMap.values()) {
             System.out.println("Value: " + value);
         }
 
@@ -65,43 +65,48 @@ public class App {
                 3, "Charlie"
         );
         System.out.println(names);
-    }
 
 
-    //Note: Map.of(...) creates an immutable Map, meaning you cannot add, remove, or modify elements.
+        if (names.containsKey(1)) { //checks if the key is in the hashmap
+            System.out.println(1 + " = " + names.get(1)); //wil return the key value pair;
+        }
 
-    //HashSet- Declaration and Initialization
-    //Declaration (only declaring, No initialization
 
-    HashSet<String> set;
+        //Note: Map.of(...) creates an immutable Map, meaning you cannot add, remove, or modify elements.
 
-    //Initialization declaring and creating the object
-    HashSet<String> secondSet = new HashSet<>();
+        //HashSet- Declaration and Initialization
+        //Declaration (only declaring, No initialization
 
-    // Populate the HashSet
+        HashSet<String> set;
+
+        //Initialization declaring and creating the object
+        HashSet<String> secondSet = new HashSet<>();
+
+        // Populate the HashSet
         secondSet.add("Alice");
         secondSet.add("Bob");
         secondSet.add("Charlie");
 
-    // Print the HashSet
+        // Print the HashSet
         System.out.println(secondSet); // Output: [Alice, Bob, Charlie]
 
-    //Iterating through a HashSet only stores unique elements and does not support index-based access
+        //Iterating through a HashSet only stores unique elements and does not support index-based access
 
-    //using an Enhanced for loop
+        //using an Enhanced for loop
 
-    for(String name : secondSet) {
-        System.out.println(name);
+        for (String name : secondSet) {
+            System.out.println(name);
+        }
+
+        //using iterator
+
+        Iterator<String> interator = secondSet.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(interator.next());
+        }
+
+        //Use a HashMap when you need key-value lookups.
+        //Use a HashSet when you only need unique values.
+
     }
-
-    //using iterator
-
-    Iterator<String> interator = secondSet.iterator();
-    while(iterator.hasNext()) {
-        System.out.println(interator.next());
-    }
-
-    //Use a HashMap when you need key-value lookups.
-    //Use a HashSet when you only need unique values.
-
 }
