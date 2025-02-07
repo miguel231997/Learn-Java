@@ -172,6 +172,22 @@ public class Main {
         return result;
     }
 
+    //CHECK TO SEE IF A STRING IS AN ANAGRAM OF ANOTHERS STRING
+
+    public boolean isAnagram(String s, String t) {
+
+    }
+
+
+
+
+
+
+
+
+
+
+
     public static void main(String args[]) {
 
     }
