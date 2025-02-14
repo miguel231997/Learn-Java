@@ -1,0 +1,88 @@
+JNI Setup and Fixes on macOS (Intel & Apple Silicon)
+
+This guide documents the steps I took to successfully compile and run a Java Native Interface (JNI) program on macOS. It also explains how I solved the architecture mismatch issue between Java and my compiled C++ library.
+
+Problem: JNI Library Architecture Mismatch
+
+Initially, I encountered this error when trying to run my Java program:
+
+Exception in thread "main" java.lang.UnsatisfiedLinkError:
+/Users/miguelgalindo/Desktop/Java/JNI/src/libmynativelib.dylib:
+mach-o file, but is an incompatible architecture (have 'arm64', need 'x86_64')
+
+Root Cause
+	•	My Java runtime was running in x86_64 mode (Intel architecture).
+	•	My JNI shared library (libmynativelib.dylib) was compiled for arm64 (Apple Silicon).
+	•	Because Java and the native library must be built for the same architecture, Java couldn’t load the .dylib.
+
+Solution: Recompile JNI Library for x86_64
+
+To match Java’s architecture (x86_64), I recompiled the C++ library using the correct flags:
+
+g++ -shared -o libmynativelib.dylib \
+-I/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home/include \
+-I/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home/include/darwin \
+-arch x86_64 \
+FindSum.cpp
+
+What Each Part of the Command Does
+	•	-shared -o libmynativelib.dylib → Creates a shared library (.dylib) for macOS.
+	•	-I/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home/include
+→ Includes Java’s standard JNI headers (jni.h).
+	•	-I/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home/include/darwin
+→ Includes macOS-specific JNI headers.
+	•	-arch x86_64 → Ensures the compiled library matches Java’s architecture.
+
+Verifying the Library Architecture
+
+After compiling, I confirmed the architecture using:
+
+file libmynativelib.dylib
+
+✅ Output:
+
+libmynativelib.dylib: Mach-O 64-bit dynamically linked shared library x86_64
+
+Now, the shared library matches Java’s architecture (x86_64), making it compatible.
+
+Solution: Set JAVA_HOME Correctly
+
+To ensure the system always uses the correct Java installation, I explicitly set JAVA_HOME:
+
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home
+
+To make this permanent, I added it to my ~/.zshrc file:
+
+echo 'export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home' >> ~/.zshrc
+source ~/.zshrc
+
+What This Does
+	•	Ensures that all Java-related commands use the correct Java version.
+	•	Prevents issues where multiple JDK installations cause confusion.
+
+Final Test: Running the Java Program
+
+With everything set up correctly, I ran my Java program:
+
+java -Djava.library.path=. FindSum
+
+✅ Output:
+
+Sum: 10.0
+
+🎉 Success! The JNI function in C++ was correctly called from Java.
+
+Summary of Fixes
+
+Issue	Fix
+Java expected x86_64, but JNI library was arm64	Recompiled JNI library using -arch x86_64
+jni.h not found	Used correct include paths: -I$JAVA_HOME/include -I$JAVA_HOME/include/darwin
+Java couldn’t find the shared library	Used -Djava.library.path=. when running Java
+System used the wrong JDK version	Set JAVA_HOME and added it to ~/.zshrc
+
+Lessons Learned
+	•	Java and native libraries must have matching architectures (x86_64 or arm64).
+	•	JNI headers must be explicitly included (jni.h and darwin/ headers for macOS).
+	•	Setting JAVA_HOME correctly prevents compatibility issues across different Java installations.
+
+Now, I have a working JNI setup on macOS, and I understand how to troubleshoot architecture mismatches in the future. 🚀
